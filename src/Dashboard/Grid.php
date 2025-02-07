@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2024 Teclib' and contributors.
+ * @copyright 2015-2025 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -307,7 +307,7 @@ HTML;
             ]);
         }
 
-        $dashboard_title = $this->dashboard->getTitle();
+        $dashboard_title = htmlspecialchars($this->dashboard->getTitle());
 
         $l_tb_icons   = "";
         $r_tb_icons   = "";
@@ -800,18 +800,20 @@ HTML;
         echo "<label>" . __("Embed in another application") . "</label><br>";
         echo "<fieldset class='embed_block'>";
         echo __("Direct link");
-        echo "<div class='copy_to_clipboard_wrapper'>";
+        echo "<div class='input-group flex-grow-1 copy_to_clipboard_wrapper'>";
         echo Html::input('direct_link', [
             'value' => $embed_url,
         ]);
+        echo "<i class='input-group-text fa-lg pointer copy_to_clipboard_wrapper' role='button'></i>";
         echo "</div><br>";
 
         $iframe = "<iframe src='$embed_url' frameborder='0' width='800' height='600' allowtransparency></iframe>";
         echo __("Iframe");
-        echo "<div class='copy_to_clipboard_wrapper'>";
+        echo "<div class='input-group flex-grow-1 copy_to_clipboard_wrapper'>";
         echo Html::input('iframe_code', [
             'value' => $iframe,
         ]);
+        echo "<i class='input-group-text fa-lg pointer copy_to_clipboard_wrapper' role='button'></i>";
         echo "</div>";
         echo "</fieldset><br>";
 
@@ -953,7 +955,7 @@ HTML;
                             unset($array['url']);
                             foreach ($array as &$value) {
                                 if (is_array($value)) {
-                                    $unset_url($value, 'url');
+                                    $unset_url($value);
                                 }
                             }
                         };
@@ -998,7 +1000,7 @@ HTML;
 
     /**
      * Return Html for a provided set of filters
-     * @param array $filter_names
+     * @param array $filters
      *
      * @return string the html
      */
@@ -1228,7 +1230,7 @@ HTML;
                         ]
                     ],
                     'cache'      => false,
-                    'filters'    => Filter::getAppliableFilters($itemtype::getTable()),
+                    'filters'    => Filter::getAppliableFilters(Ticket::getTable()),
                 ];
 
                 $cards["table_count_tickets_$case"] = [
@@ -1243,7 +1245,7 @@ HTML;
                             'validation_check_user' => true,
                         ]
                     ],
-                    'filters'    => Filter::getAppliableFilters($itemtype::getTable()),
+                    'filters'    => Filter::getAppliableFilters(Ticket::getTable()),
                 ];
             }
 

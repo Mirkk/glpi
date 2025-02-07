@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2024 Teclib' and contributors.
+ * @copyright 2015-2025 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -124,7 +124,7 @@ class ReservationItem extends CommonDBChild
      * @param $itemtype   type of the item
      * @param $ID         ID of the item
      *
-     * @return true if succeed else false
+     * @return boolean true if succeed else false
      **/
     public function getFromDBbyItem($itemtype, $ID)
     {
@@ -979,6 +979,7 @@ class ReservationItem extends CommonDBChild
     {
 
         if ($item->getType() == __CLASS__) {
+            /** @var ReservationItem $item */
             switch ($tabnum) {
                 case 1:
                     $item->showListSimple();

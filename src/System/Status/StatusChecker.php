@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2024 Teclib' and contributors.
+ * @copyright 2015-2025 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -389,11 +389,14 @@ final class StatusChecker
         if ($status === null) {
             $status['status'] = self::STATUS_NO_DATA;
             if (!empty($CFG_GLPI['cas_host'])) {
-                $url = $CFG_GLPI['cas_host'];
+                // Rebuild CAS URL
+                // see `CAS_Client::_getServerBaseURL()`
+                $url = 'https://' . $CFG_GLPI['cas_host'];
                 if (!empty($CFG_GLPI['cas_port'])) {
                     $url .= ':' . (int)$CFG_GLPI['cas_port'];
                 }
                 $url .= '/' . $CFG_GLPI['cas_uri'];
+
                 if (Toolbox::isUrlSafe($url)) {
                     $data = Toolbox::getURLContent($url);
                     if (!empty($data)) {

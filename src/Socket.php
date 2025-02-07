@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2024 Teclib' and contributors.
+ * @copyright 2015-2025 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -83,6 +83,10 @@ class Socket extends CommonDBChild
         return false;
     }
 
+    public function maybeRecursive()
+    {
+        return false;
+    }
 
     public function defineTabs($options = [])
     {
@@ -183,7 +187,7 @@ class Socket extends CommonDBChild
      *     - itemtype type of the item for add process
      *     - items_id ID of the item for add process
      *
-     * @return true if displayed  false if item not found or not right to display
+     * @return boolean true if displayed  false if item not found or not right to display
      **/
     public function showForm($ID, array $options = [])
     {
@@ -215,10 +219,8 @@ class Socket extends CommonDBChild
 
     public function prepareInputForAdd($input)
     {
-        // If no items_id is set, do not store itemtype or items_id
-        if (!isset($input['items_id']) || empty($input['items_id'])) {
-            unset($input['itemtype']);
-            unset($input['items_id']);
+        if (empty($input['items_id'])) {
+            unset($input['itemtype'], $input['items_id']);
         }
         $input = $this->retrievedataFromNetworkPort($input);
         return $input;
@@ -227,10 +229,8 @@ class Socket extends CommonDBChild
 
     public function prepareInputForUpdate($input)
     {
-        // If no items_id is set, do not store itemtype or items_id
-        if (!isset($input['items_id']) || empty($input['items_id'])) {
-            unset($input['itemtype']);
-            unset($input['items_id']);
+        if (isset($input['items_id']) && empty($input['items_id'])) {
+            unset($input['itemtype'], $input['items_id']);
         }
         $input = $this->retrievedataFromNetworkPort($input);
         return $input;
@@ -1054,7 +1054,7 @@ class Socket extends CommonDBChild
                                         )
             );
 
-            foreach ($DB->request('glpi_sockets', $crit) as $data) {
+            foreach ($DB->request(self::getTable(), $crit) as $data) {
                 Session::addToNavigateListItems('Socket', $data["id"]);
                 echo "<tr class='tab_bg_1'>";
 
@@ -1130,9 +1130,9 @@ class Socket extends CommonDBChild
      * @param $options   array
      **/
     public static function getHTMLTableCellsForItem(
-        HTMLTableRow $row = null,
-        CommonDBTM $item = null,
-        HTMLTableCell $father = null,
+        ?HTMLTableRow $row = null,
+        ?CommonDBTM $item = null,
+        ?HTMLTableCell $father = null,
         $options = []
     ) {
 

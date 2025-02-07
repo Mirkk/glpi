@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2024 Teclib' and contributors.
+ * @copyright 2015-2025 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -310,9 +310,9 @@ class ReminderTranslation extends CommonDBChild
      * It be translated if translation if globally on and item is an instance of CommonDropdown
      * or CommonTreeDropdown and if translation is enabled for this class
      *
-     * @param item the item to check
+     * @param CommonGLPI $item the item to check
      *
-     * @return true if item can be translated, false otherwise
+     * @return boolean true if item can be translated, false otherwise
      **/
     public static function canBeTranslated(CommonGLPI $item)
     {
@@ -342,7 +342,7 @@ class ReminderTranslation extends CommonDBChild
     /**
      * Get already translated languages for item
      *
-     * @param item
+     * @param CommonDBTM $item
      *
      * @return array of already translated languages
      **/
